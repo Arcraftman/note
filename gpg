@@ -1,0 +1,222 @@
+以下是 **GPG（GNU Privacy Guard）** 的详细命令说明，包括常用功能及示例：
+
+---
+
+## **1. 密钥管理**
+
+### **生成密钥对**
+
+gpg --full-generate-key
+
+- 按提示输入名称、电子邮件、密钥类型（通常选 RSA 和 RSA）以及密钥长度（推荐 4096 位）。
+- 设置密钥的过期时间（如 0 表示永不过期）。
+- 最后创建密钥时需要设置密码。
+
+---
+
+### **列出密钥**
+- **列出公钥**：
+  
+  gpg --list-keys
+  
+  示例输出：
+  
+  pub   rsa4096 2024-01-01 [SC]
+        ABCDEFGH1234567890ABCDEFGH1234567890ABCDEF
+  uid           [ultimate] John Doe <johndoe@example.com>
+  sub   rsa4096 2024-01-01 [E]
+  
+
+- **列出私钥**：
+  
+  gpg --list-secret-keys
+  
+
+- **列出详细信息**：
+  
+  gpg --fingerprint "John Doe"
+  
+  输出密钥指纹，用于密钥验证和交换。
+
+---
+
+### **导出密钥**
+- **导出公钥到文件**：
+  
+  gpg --export -a "John Doe" > public_key.asc
+  
+  生成的 `public_key.asc` 文件可分享给他人。
+
+- **导出私钥到文件**（谨慎操作！）：
+  
+  gpg --export-secret-key -a "John Doe" > private_key.asc
+  
+
+---
+
+### **导入密钥**
+- **导入公钥**：
+  
+  gpg --import public_key.asc
+  
+
+- **导入私钥**：
+  
+  gpg --import private_key.asc
+  
+
+---
+
+### **删除密钥**
+- 删除公钥：
+  
+  gpg --delete-key "John Doe"
+  
+- 删除私钥：
+  
+  gpg --delete-secret-key "John Doe"
+  
+
+---
+
+## **2. 数据加密与解密**
+
+### **加密文件**
+- **为特定接收者加密**：
+  
+  gpg --encrypt -r "John Doe" file.txt
+  
+  输出：生成 `file.txt.gpg`，只能由接收者解密。
+
+- **同时加密和签名**：
+  
+  gpg --encrypt --sign -r "John Doe" file.txt
+  
+
+- **对称加密（无需密钥，仅需密码）**：
+  
+  gpg --symmetric file.txt
+  
+  加密后生成 `file.txt.gpg`，解密需要输入设置的密码。
+
+---
+
+### **解密文件**
+- 解密加密文件：
+  
+  gpg --decrypt file.txt.gpg
+  
+  输出解密内容到终端。
+
+- 解密并输出到文件：
+  
+  gpg --output file_decrypted.txt --decrypt file.txt.gpg
+  
+
+---
+
+## **3. 数字签名与验证**
+
+### **创建签名**
+- **为文件创建单独的签名**：
+  
+  gpg --sign file.txt
+  
+  输出：`file.txt.gpg`，包括文件和签名。
+
+- **创建分离式签名**（签名单独保存）：
+  
+  gpg --detach-sign file.txt
+  
+  输出：生成 `file.txt.sig`。
+
+---
+
+### **验证签名**
+- 验证嵌入式签名：
+  
+  gpg --verify file.txt.gpg
+  
+  输出验证结果。
+
+- 验证分离式签名：
+  
+  gpg --verify file.txt.sig file.txt
+  
+
+---
+
+## **4. 管理信任与密钥信任**
+
+### **信任密钥**
+- 编辑密钥以设置信任级别：
+  
+  gpg --edit-key "John Doe"
+  
+  在交互式菜单中，输入：
+  
+  trust
+  
+  按提示设置信任级别（如 5 为完全信任），然后输入 `save` 保存。
+
+---
+
+### **列出信任指纹**
+
+gpg --list-sigs "John Doe"
+
+
+---
+
+## **5. 密钥备份与恢复**
+
+### **备份密钥环**
+- 备份 GPG 密钥环：
+  
+  tar -cvf gpg_backup.tar ~/.gnupg
+  
+
+### **恢复密钥环**
+- 恢复备份：
+  
+  tar -xvf gpg_backup.tar -C ~/
+  
+
+---
+
+## **6. 其他实用命令**
+
+### **压缩后加密**
+将文件压缩后再加密：
+
+tar -czf - file.txt | gpg --encrypt -r "John Doe" > file.tar.gz.gpg
+
+
+---
+
+### **查看加密文件接收者**
+
+gpg --list-packets file.txt.gpg
+
+
+---
+
+### **更改密钥密码**
+
+gpg --edit-key "John Doe"
+
+进入交互式菜单后，输入：
+
+passwd
+
+更改私钥的密码。
+
+---
+
+### **清理未使用的密钥**
+清理密钥环中不再使用的密钥：
+
+gpg --delete-keys "无用的密钥名"
+
+
+---
