@@ -1,0 +1,87 @@
+For example:
+● mysql.service - MySQL Community Server
+     Loaded: loaded (/usr/lib/systemd/system/mysql.service; enabled; preset: enabled)
+     Active: active (running) since Sat 2024-12-28 10:34:40 CST; 3h 9min ago
+ Invocation: f6b18908313448309b9b99833899438b
+   Main PID: 2141 (mysqld)
+     Status: "Server is operational"
+      Tasks: 38 (limit: 18173)
+     Memory: 428.6M (peak: 440.7M)
+        CPU: 46.997s
+     CGroup: /system.slice/mysql.service
+             └─2141 /usr/sbin/mysqld
+
+--------------------[Explaination]---------------------
+
+### 4. **`Invocation: f6b18908313448309b9b99833899438b`**
+- **含义**：systemd 生成的服务实例标识符。
+- **解释**：这是一个唯一的 UUID，标识该服务当前运行实例的 ID，用于日志关联和排查问题。
+
+---
+
+### 5. **`Main PID: 2141 (mysqld)`**
+- **`Main PID`**：
+  - MySQL 服务的主进程 ID（PID）。
+  - **`2141`** 是主进程 ID，表示当前 MySQL 服务由 PID 为 `2141` 的进程控制。
+- **`(mysqld)`**：
+  - 主进程的名称，`mysqld` 是 MySQL 服务的守护进程。
+
+---
+
+### 6. **`Status: "Server is operational"`**
+- **含义**：服务的运行状态信息。
+- **解释**：当前服务的状态为 "Server is operational"，表明 MySQL 服务器正在正常运行且可用。
+
+---
+
+### 7. **`Tasks: 38 (limit: 18173)`**
+- **`Tasks: 38`**：
+  - 当前服务正在运行的线程或进程数。
+  - 这里表示 MySQL 服务使用了 38 个任务（线程）。
+- **`limit: 18173`**：
+  - 系统为该服务允许的最大任务数限制。
+  - MySQL 服务最多可以创建 18,173 个任务。
+
+---
+
+### 8. **`Memory: 428.6M (peak: 440.7M)`**
+- **`Memory`**：
+  - 服务当前使用的内存大小。
+  - `428.6M` 表示当前 MySQL 服务占用 428.6 MB 的内存。
+- **`peak: 440.7M`**：
+  - 服务运行期间使用的内存峰值。
+  - 这里表示 MySQL 服务的内存使用峰值为 440.7 MB。
+
+---
+
+### 9. **`CPU: 46.997s`**
+- **含义**：服务累计消耗的 CPU 时间。
+- **解释**：表示自服务启动以来，MySQL 服务累计使用了约 46.997 秒的 CPU 时间。
+
+---
+
+### 10. **`CGroup: /system.slice/mysql.service`**
+- **`CGroup`**：
+  - 服务所在的控制组（Control Group）。
+  - **`/system.slice/mysql.service`**：
+    - `system.slice` 是系统管理服务的默认分组。
+    - `mysql.service` 表示该服务的 CGroup 是专为 MySQL 服务划分的。
+
+---
+
+### 11. **`└─2141 /usr/sbin/mysqld`**
+- **`└─2141`**：
+  - 主进程 ID，和上面的 `Main PID` 一致。
+- **`/usr/sbin/mysqld`**：
+  - 主进程的实际可执行文件路径。
+  - `mysqld` 是 MySQL 数据库守护进程的二进制文件。
+
+---
+
+这段输出表明：
+- MySQL 服务已经正确加载并正在运行。
+- 服务从 `2024-12-28 10:34:40` 开始运行，已持续运行了 3 小时 9 分钟。
+- 主进程的 PID 是 `2141`，使用了 428.6 MB 的内存，CPU 累计使用了约 46.997 秒。
+- 服务运行时限制为最多创建 18,173 个任务，当前使用了 38 个。
+- 服务的控制组为 `/system.slice/mysql.service`。
+

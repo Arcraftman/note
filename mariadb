@@ -1,0 +1,96 @@
+在 MariaDB 中创建新用户需要使用 `CREATE USER` 和 `GRANT` 命令。以下是详细步骤：
+
+---
+
+### 1. **进入 MariaDB**
+首先登录到 MariaDB 命令行：
+
+mysql -u root -p
+
+
+---
+
+### 2. **创建新用户**
+使用以下命令创建一个新用户。替换 `new_user` 和 `new_password` 为你想要的用户名和密码：
+
+sql
+CREATE USER 'new_user'@'localhost' IDENTIFIED BY 'new_password';
+
+
+#### 解释：
+- `'new_user'@'localhost'`：表示用户只能从本地主机（`localhost`）登录。如果需要允许远程登录，将 `localhost` 替换为 `%`（表示任意主机）：
+  sql
+  CREATE USER 'new_user'@'%' IDENTIFIED BY 'new_password';
+  
+- `IDENTIFIED BY 'new_password'`：为用户设置密码。
+
+---
+
+### 3. **授予权限**
+授予用户访问数据库的权限。以下是常见的授权方式：
+
+#### 授予某个数据库的所有权限：
+sql
+GRANT ALL PRIVILEGES ON database_name.* TO 'new_user'@'localhost';
+
+- **`database_name.*`**：表示授予该用户对 `database_name` 数据库的所有表的权限。
+- **`ALL PRIVILEGES`**：授予所有权限（包括 `SELECT`、`INSERT`、`UPDATE`、`DELETE` 等操作）。
+
+#### 授予用户对所有数据库的权限（全局权限）：
+sql
+GRANT ALL PRIVILEGES ON *.* TO 'new_user'@'localhost';
+
+
+#### 授予某些特定权限：
+如果只想授予特定权限（如只读权限），可以使用以下命令：
+sql
+GRANT SELECT ON database_name.* TO 'new_user'@'localhost';
+
+
+---
+
+### 4. **刷新权限**
+执行以下命令使权限更改生效：
+sql
+FLUSH PRIVILEGES;
+
+
+---
+
+### 5. **验证用户**
+退出当前 MariaDB 会话并使用新用户登录，验证是否成功：
+
+mysql -u new_user -p
+
+
+如果设置为远程访问，记得在登录时指定主机：
+
+mysql -u new_user -p -h <server_ip>
+
+
+---
+
+### 6. **查看用户权限**
+验证新用户权限是否正确：
+sql
+SHOW GRANTS FOR 'new_user'@'localhost';
+
+
+---
+
+### 7. **常见问题**
+#### **用户无法远程连接**
+确保以下配置已正确设置：
+1. 修改 MariaDB 配置文件 `/etc/my.cnf.d/server.cnf` 或 `/etc/mysql/my.cnf` 中的 `bind-address`：
+   ini
+   bind-address = 0.0.0.0
+   
+2. 检查防火墙是否开放了 3306 端口：
+   
+   sudo firewall-cmd --permanent --add-port=3306/tcp
+   sudo firewall-cmd --reload
+   
+
+---
+
+完成以上步骤后，你就成功创建了一个 MariaDB 用户并配置了权限。如果还有其他问题，随时告诉我！

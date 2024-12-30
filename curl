@@ -1,0 +1,179 @@
+`curl` 是一个强大的命令行工具，用于从命令行请求或传输数据。它支持多种协议（如 HTTP、HTTPS、FTP 等），常用于测试 API、下载文件等。
+
+以下是对 `curl` 命令的详细解析：
+
+---
+
+## **基本语法**
+
+curl [options] [URL]
+
+
+### **常用选项**
+| **选项**            | **描述**                                                                 |
+|---------------------|-------------------------------------------------------------------------|
+| `-X` 或 `--request` | 指定 HTTP 方法（如 GET、POST、PUT、DELETE）。默认使用 GET 方法。             |
+| `-d` 或 `--data`    | 发送 POST 数据。例如：`-d "key=value"`。                                   |
+| `-H` 或 `--header`  | 添加自定义请求头，例如：`-H "Content-Type: application/json"`。            |
+| `-i` 或 `--include` | 在输出中包含响应头信息。                                                  |
+| `-o` 或 `--output`  | 将输出保存到文件，例如：`-o file.txt`。                                    |
+| `-L` 或 `--location`| 自动跟随重定向（HTTP 3xx 状态码）。                                       |
+| `-u` 或 `--user`    | 使用用户名和密码进行 HTTP 基本认证，例如：`-u username:password`。          |
+| `-I` 或 `--head`    | 只获取响应头，不获取正文。                                                |
+| `-k` 或 `--insecure`| 忽略 SSL 证书验证（不安全）。                                             |
+| `--compressed`      | 请求支持压缩的响应。                                                      |
+| `-v` 或 `--verbose` | 显示详细的请求和响应过程。                                                |
+
+-f (fail): 失败时不输出错误页面内容。当 curl 请求的 HTTP 响应代码为 400 或更高（如 404、500 等错误代码）时，curl 会停止下载并返回错误，而不会将服务器的错误页面内容输出到终端。
+
+-s (silent): 静默模式。禁用所有进度条和错误信息输出，仅输出结果。适用于脚本中避免多余的终端信息干扰。
+
+-S (show-error): 显示错误信息。只有在 -s 被使用时才有效，它会在静默模式下将错误信息显示出来。
+
+-L (location): 跟随重定向。如果服务器返回 3xx 状态码并带有 Location 头，curl 会自动访问新的 URL。
+---
+
+## **示例讲解**
+
+### 1. **发送 GET 请求**
+默认的 `curl` 请求就是 GET 请求：
+
+curl https://api.example.com/data
+
+
+**加上详细模式**
+
+curl -v https://api.example.com/data
+
+
+---
+
+### 2. **发送 POST 请求**
+发送表单数据：
+
+curl -X POST -d "key1=value1&key2=value2" https://api.example.com/submit
+
+
+发送 JSON 数据：
+
+curl -X POST -H "Content-Type: application/json" -d '{"key1":"value1","key2":"value2"}' https://api.example.com/submit
+
+
+---
+
+### 3. **自定义请求头**
+通过 `-H` 添加请求头：
+
+curl -H "Authorization: Bearer <token>" https://api.example.com/data
+
+
+---
+
+### 4. **保存响应内容到文件**
+将响应内容保存到本地文件：
+
+curl -o output.html https://example.com
+
+
+指定文件夹和文件名：
+
+curl -o /tmp/example.html https://example.com
+
+
+---
+
+### 5. **跟随重定向**
+当服务器返回 3xx 重定向状态码时，默认情况下 `curl` 不会跟随重定向。使用 `-L` 可让它自动跟随：
+
+curl -L https://example.com
+
+
+---
+
+### 6. **查看响应头**
+只获取响应头信息而不获取正文：
+
+curl -I https://example.com
+
+
+---
+
+### 7. **模拟浏览器**
+通过 `-A` 指定 `User-Agent` 模拟浏览器请求：
+
+curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" https://example.com
+
+
+---
+
+### 8. **发送带认证的请求**
+#### HTTP 基本认证：
+
+curl -u username:password https://example.com
+
+
+#### Bearer Token：
+
+curl -H "Authorization: Bearer <token>" https://example.com
+
+
+---
+
+### 9. **忽略 SSL 证书**
+在调试时可能会用到，忽略 HTTPS 证书问题（**注意：生产环境中避免使用此选项**）：
+
+curl -k https://example.com
+
+
+---
+
+### 10. **代理设置**
+通过代理发送请求：
+
+curl -x http://proxy.example.com:8080 https://example.com
+
+
+---
+
+### 11. **上传文件**
+上传文件到服务器：
+
+curl -X POST -F "file=@/path/to/file" https://api.example.com/upload
+
+
+---
+
+### 12. **多线程下载**
+分块下载文件（示例：通过 Range 请求部分文件）：
+
+curl -r 0-999 https://example.com/largefile -o part1
+curl -r 1000-1999 https://example.com/largefile -o part2
+
+
+---
+
+### 13. **调试 API 请求**
+查看详细请求和响应信息：
+
+curl -v -X POST -H "Content-Type: application/json" -d '{"key":"value"}' https://api.example.com
+
+
+---
+
+## **常用组合案例**
+
+### 获取 IP 地址：
+
+curl ifconfig.me
+
+
+### 下载文件：
+
+curl -O https://example.com/file.zip
+
+
+### 测试 API 返回的延迟：
+
+curl -w "Time: %{time_total}\n" -o /dev/null -s https://example.com
+
+

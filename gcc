@@ -1,0 +1,98 @@
+`gcc`（GNU 编译器集合）是一个非常强大的工具，可以用于编译 C 和 C++ 代码，也支持其他语言的编译。以下是一些常用的 `gcc` 命令和选项：
+
+### 基本命令
+1. **编译 C 程序**
+   
+   gcc source.c -o output
+   
+   这个命令将编译 `source.c`，并生成名为 `output` 的可执行文件。
+
+2. **只编译不链接**
+   
+   gcc -c source.c
+   
+   这个命令将只编译 `source.c`，生成一个目标文件（`.o`），而不进行链接。
+
+3. **编译并生成汇编代码**
+   
+   gcc -S source.c
+   
+   这个命令将把 C 代码编译为汇编代码（`.s` 文件）。
+
+4. **查看预处理输出**
+   
+   gcc -E source.c
+   
+   这个命令将显示 C 代码经过预处理后的输出，通常用于查看宏展开和头文件包含的内容。
+
+5. **指定编译器警告级别**
+   
+   gcc -Wall source.c
+   
+   这个命令会开启常见的警告，帮助你发现代码中的潜在问题。
+
+### 调试和优化
+6. **生成调试信息**
+   
+   gcc -g source.c -o output
+   
+   这个命令会生成调试信息，方便使用 `gdb` 进行调试。
+
+7. **开启优化**
+   
+   gcc -O2 source.c -o output
+   
+   `-O2` 开启中等程度的优化，`-O0` 关闭优化，`-O3` 开启最高级别优化。
+
+### 链接相关
+8. **静态链接库**
+   
+   gcc source.c -o output -L/path/to/lib -lmyLibrary
+   
+   `-L` 用来指定库的路径，`-l` 用来指定要链接的库（例如 `libmyLibrary.a`）。
+
+9. **动态链接库**
+   
+   gcc source.c -o output -L/path/to/lib -lmyLibrary -shared
+   
+   这个命令会生成一个动态链接库（`.so` 文件）。
+
+10. **链接多个源文件**
+    
+    gcc source1.c source2.c -o output
+    
+    这个命令会将多个源文件一起编译并链接成一个可执行文件。
+
+### 其他常用选项
+11. **指定标准**
+    
+    gcc -std=c99 source.c -o output
+    
+    这个命令指定编译器使用 C99 标准进行编译。常用的选项有：
+    - `-std=c89`：C89 标准
+    - `-std=c99`：C99 标准
+    - `-std=c11`：C11 标准
+
+12. **定义宏**
+    
+    gcc -DDEBUG source.c -o output
+    
+    `-D` 用来定义宏，例如在代码中使用 `#ifdef DEBUG` 来控制条件编译。
+
+13. **显示版本信息**
+    
+    gcc --version
+    
+    这个命令会显示 GCC 的版本信息。
+
+14. **使用特定的 C 标准库**
+    
+    gcc -nostdlib source.c -o output
+    
+    `-nostdlib` 告诉编译器不要链接标准库，这在编写嵌入式系统代码时可能会用到。
+
+### 示例：多个选项结合使用
+编译并调试一个 C 程序，同时启用所有警告并优化代码：
+
+gcc -g -O2 -Wall source.c -o output
+

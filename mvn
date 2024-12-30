@@ -1,0 +1,235 @@
+以下是常用的 Maven 命令大全，这些命令涵盖了从项目构建、依赖管理到部署的常用操作：
+
+---
+
+## **1. 项目构建和清理**
+
+### **清理项目**
+
+mvn clean
+
+- 删除 `target` 目录中的构建输出。
+
+### **编译项目**
+
+mvn compile
+
+- 编译 `src/main/java` 中的代码。
+
+### **编译测试代码**
+
+mvn test-compile
+
+- 编译 `src/test/java` 中的代码。
+
+### **运行测试**
+
+mvn test
+
+- 运行编译后的测试代码。
+
+### **打包项目**
+
+mvn package
+
+- 根据 `pom.xml` 配置打包项目（例如生成 JAR 或 WAR）。
+
+---
+
+## **2. 安装和部署**
+
+### **安装到本地仓库**
+
+mvn install
+
+- 将构建好的 JAR 或 WAR 安装到本地仓库。
+
+### **部署到远程仓库**
+
+mvn deploy
+
+- 将项目发布到配置的远程仓库（需配置 `distributionManagement`）。
+
+---
+
+## **3. 生命周期命令**
+
+### **执行完整的默认生命周期**
+
+mvn install
+
+等价于依次执行：
+1. `validate` - 验证项目结构和配置。
+2. `compile` - 编译源代码。
+3. `test` - 运行测试代码。
+4. `package` - 打包为 JAR 或 WAR 文件。
+5. `install` - 安装到本地仓库。
+
+### **仅验证项目**
+
+mvn validate
+
+- 验证项目是否正确配置。
+
+### **仅生成资源**
+
+mvn resources:resources
+
+- 将 `src/main/resources` 中的文件复制到目标目录。
+
+---
+
+## **4. 依赖管理**
+
+### **列出依赖树**
+
+mvn dependency:tree
+
+- 查看项目的依赖树，排查依赖冲突。
+
+### **查看依赖列表**
+
+mvn dependency:list
+
+- 列出所有依赖及其版本。
+
+### **下载依赖**
+
+mvn dependency:resolve
+
+- 强制下载项目的依赖。
+
+---
+
+## **5. 插件命令**
+
+### **运行指定插件**
+
+mvn plugin:goal
+
+- 例如运行 `clean` 插件：
+  
+  mvn clean:clean
+  
+
+### **列出所有可用插件**
+
+mvn help:describe
+
+
+---
+
+## **6. 强制更新依赖**
+
+### **强制从远程仓库更新 SNAPSHOT**
+
+mvn clean install -U
+
+- 更新依赖和插件到最新版本。
+
+---
+
+## **7. 多模块项目**
+
+### **同时构建所有模块**
+
+mvn install
+
+- 在父模块执行，构建所有子模块。
+
+### **只构建某个模块**
+
+mvn install -pl module-name
+
+
+### **跳过其他模块的依赖**
+
+mvn install -pl module-name -am
+
+- 同时构建 `module-name` 和它的依赖模块。
+
+---
+
+## **8. 跳过测试**
+
+### **跳过测试代码的执行**
+
+mvn install -DskipTests
+
+
+### **跳过测试的编译和执行**
+
+mvn install -Dmaven.test.skip=true
+
+
+---
+
+## **9. 清除本地仓库依赖**
+
+### **清理本地仓库中项目的依赖**
+
+mvn dependency:purge-local-repository
+
+
+---
+
+## **10. 运行项目**
+
+### **运行 Spring Boot 应用**
+
+mvn spring-boot:run
+
+
+---
+
+## **11. 检查和调试**
+
+### **检查 Maven 项目信息**
+
+mvn help:effective-pom
+
+- 查看完整的 POM 配置。
+
+### **调试 Maven**
+
+mvn install -X
+
+- 以调试模式运行，显示详细日志。
+
+---
+
+## **12. 版本管理**
+
+### **查看 Maven 的版本信息**
+
+mvn -v
+
+
+### **更新项目的依赖版本**
+
+mvn versions:use-latest-versions
+
+- 更新 POM 文件中的依赖为最新版本。
+
+---
+
+## **13. 其他常用命令**
+
+### **构建并跳过单元测试**
+
+mvn clean package -DskipTests
+
+
+### **指定 Maven 配置文件**
+
+mvn install -s settings.xml
+
+- 使用自定义的 `settings.xml` 文件。
+
+---
+
+### **注意**
+- 如果遇到问题，可通过 `mvn clean install -X` 查看详细日志进行排查。
+- 常用命令如 `mvn install` 和 `mvn dependency:tree` 是调试项目的重要工具。
+
+希望这些命令对你有帮助！如果有更多问题，可以随时问我！

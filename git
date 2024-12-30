@@ -1,0 +1,538 @@
+### 6. **查看提交历史**
+
+git log
+
+- **作用**：查看提交记录。
+- **常用选项**：
+  - `git log --oneline`：简洁模式。
+  - `git log --graph --all`：图形化显示所有分支的提交历史。
+
+---
+
+### 7. **查看文件改动**
+
+git diff
+
+- **作用**：查看工作区和暂存区的差异。
+- **常用选项**：
+  - `git diff --staged`：查看暂存区与最后一次提交之间的差异。
+  - `git diff HEAD`：查看工作区和最新提交之间的差异。
+
+---
+
+### 8. **分支管理**
+### `git branch` 命令详解
+
+`git branch` 是一个用于管理分支的核心命令，主要负责分支的查看、创建、删除和重命名等操作。
+
+---
+
+## 1. **查看分支**
+
+### 查看当前分支列表
+
+git branch
+
+- **作用**：列出本地所有分支，并用 `*` 标记当前所在的分支。
+- **示例输出**：
+  
+  * main
+    feature
+    bugfix
+  
+
+### 查看所有（本地 + 远程）分支
+
+git branch -a
+
+- **作用**：列出本地和远程分支。
+- **示例输出**：
+  
+  * main
+    feature
+    bugfix
+    remotes/origin/main
+    remotes/origin/feature
+  
+
+### 查看已合并的分支
+
+git branch --merged
+
+- **作用**：显示已合并到当前分支的分支。
+- **用途**：便于清理已合并的旧分支。
+
+### 查看未合并的分支
+
+git branch --no-merged
+
+- **作用**：显示尚未合并到当前分支的分支。
+
+---
+
+## 2. **创建分支**
+
+### 创建新分支
+
+git branch <branch-name>
+
+- **作用**：创建一个新的分支，但不会切换到该分支。
+- **示例**：
+  
+  git branch feature
+  
+
+### 创建并切换到新分支
+
+git checkout -b <branch-name>
+# 或
+git switch -c <branch-name>
+
+- **作用**：创建新分支并立即切换到该分支。
+- **示例**：
+  
+  git checkout -b feature
+  
+
+---
+
+## 3. **重命名分支**
+
+### 重命名当前分支
+
+git branch -m <new-branch-name>
+
+- **作用**：将当前分支重命名。
+- **示例**：
+  
+  git branch -m new-feature
+  
+
+### 重命名指定分支
+
+git branch -m <old-branch-name> <new-branch-name>
+
+- **作用**：对非当前分支进行重命名。
+- **示例**：
+  
+  git branch -m feature new-feature
+  
+
+---
+
+## 4. **删除分支**
+
+### 删除本地分支
+
+git branch -d <branch-name>
+
+- **作用**：删除指定的分支。
+- **限制**：
+  - 只能删除已合并到当前分支或其他分支的分支。
+  - 如果分支尚未合并，则会报错。
+
+### 强制删除本地分支
+
+git branch -D <branch-name>
+
+- **作用**：强制删除未合并的分支。
+- **用途**：用来清理不再需要的未合并分支。
+
+---
+
+## 5. **关联和删除远程分支**
+
+### 查看远程分支
+
+git branch -r
+
+- **作用**：显示所有远程分支。
+
+### 删除远程分支
+
+git push origin --delete <branch-name>
+
+- **作用**：删除远程分支。
+- **示例**：
+  
+  git push origin --delete feature
+  
+推送本地分支到远程仓库并设置关联：
+- git push -u origin main
+---
+
+## 6. **其他选项**
+
+### 查看分支的最后一次提交
+
+git branch -v
+
+- **作用**：显示每个分支的最后一次提交摘要。
+- **示例输出**：
+  
+  * main     5e1234f Add README file
+    feature  a12bc34 Implement new feature
+  
+
+### 查看分支包含的提交
+
+git branch --contains <commit-hash>
+
+- **作用**：显示包含指定提交的所有分支。
+
+---
+
+## 示例场景
+
+### 创建并切换到新分支
+
+git checkout -b feature-login
+
+
+### 合并后删除本地分支
+
+git branch --merged  # 查看已合并的分支
+git branch -d feature-login
+
+
+### 删除远程分支
+
+git push origin --delete feature-login
+
+
+---
+
+### 总结
+
+| 命令                               | 作用                           |
+|------------------------------------|--------------------------------|
+| `git branch`                      | 查看本地分支                   |
+| `git branch -a`                   | 查看所有（本地 + 远程）分支     |
+| `git branch -r`                   | 查看远程分支                   |
+| `git branch <branch-name>`        | 创建新分支                     |
+| `git branch -d <branch-name>`     | 删除本地分支（已合并）         |
+| `git branch -D <branch-name>`     | 强制删除本地分支（未合并）     |
+| `git push origin --delete <name>` | 删除远程分支                   |
+| `git branch -m <old> <new>`       | 重命名分支                     | 
+
+如果需要更详细的用法或特定场景的讲解，可以进一步探讨！
+
+### **`git restore` 命令详解**
+
+`git restore` 是 Git 中用于恢复或撤销文件改动的命令。它可以用来丢弃工作区的修改、从暂存区恢复文件，或从特定提交中恢复文件状态。
+
+---
+
+### **命令语法**
+
+git restore [<options>] [--source=<tree-ish>] <pathspec>...
+
+
+---
+
+### **常见用法**
+
+#### **1. 丢弃工作区的修改**
+
+git restore <file>
+
+- **作用**：将工作区中的文件恢复到最近一次提交的状态（`HEAD`），丢弃未暂存的更改。
+- **示例**：
+  
+  git restore example.txt
+  
+  - 如果 `example.txt` 文件中有修改但未暂存，这个命令会撤销这些修改。
+
+---
+
+#### **2. 丢弃工作区所有文件的修改**
+
+git restore .
+
+- **作用**：恢复当前目录及其子目录中所有文件到最近一次提交状态。
+- **示例**：
+  
+  git restore .
+  
+  - 适合清理所有未暂存的改动。
+
+---
+
+#### **3. 从暂存区移除文件**
+
+git restore --staged <file>
+
+- **作用**：取消 `git add`，将文件从暂存区移回工作区，但保留文件修改。
+- **示例**：
+  
+  git restore --staged example.txt
+  
+  - 如果文件 `example.txt` 被 `git add`，但尚未提交，此命令可以将其移出暂存区。
+
+---
+
+#### **4. 恢复到特定提交**
+
+git restore --source=<commit-hash> <file>
+
+- **作用**：将文件恢复到指定提交的状态。
+- **示例**：
+  
+  git restore --source=abc1234 example.txt
+  
+  - 恢复文件 `example.txt` 到提交哈希值为 `abc1234` 的版本。
+
+---
+
+#### **5. 强制恢复**
+
+git restore --force <file>
+
+- **作用**：强制覆盖文件，即使文件在恢复时有未保存的更改。
+- **示例**：
+  
+  git restore --force example.txt
+  
+
+---
+
+### **结合使用的选项**
+- `--source=<commit-hash>`：指定恢复文件的来源版本（如提交哈希、分支名等）。
+- `--staged`：从暂存区中移除文件，但保留工作区修改。
+- `--force`：强制覆盖文件。
+- `--worktree`：默认操作，恢复工作区的文件（不包括暂存区）。
+
+---
+
+### **`git restore` 的优势**
+
+#### **与 `git checkout` 的对比**
+在 Git 2.23 之前，`git checkout` 用于完成分支切换和文件恢复两种功能。职责不单一，容易混淆。
+
+- 示例（旧的做法）：
+  
+  git checkout -- <file>
+  
+
+- `git restore` 的引入：
+  - 专注于文件恢复。
+  - 简化操作，更具可读性和直观性。
+
+---
+
+#### **与 `git reset` 的对比**
+- `git restore` 专注于文件改动的恢复。
+- `git reset` 更多用于管理提交历史和暂存区。
+- 示例对比：
+  - **撤销文件的暂存状态**：
+    
+    git restore --staged <file> # 推荐
+    git reset HEAD <file>       # 旧方法
+    
+
+---
+
+### **实际场景示例**
+
+#### **撤销工作区改动**
+
+git restore main.java
+
+- 场景：你修改了 `main.java`，但不想保留这些改动。
+
+#### **取消暂存文件**
+
+git restore --staged app.js
+
+- 场景：你意外执行了 `git add app.js`，但尚未提交，希望将其移出暂存区。
+
+#### **恢复文件到指定提交**
+
+git restore --source=1234abcd config.json
+
+- 场景：你想将 `config.json` 恢复到某个历史提交的版本。
+
+#### **强制恢复文件**
+
+git restore --force style.css
+
+- 场景：你想丢弃本地的所有未保存更改，恢复到提交状态。
+
+---
+
+### **总结**
+
+| 命令                             | 功能                                         |
+|----------------------------------|----------------------------------------------|
+| `git restore <file>`             | 丢弃文件的工作区修改                         |
+| `git restore .`                  | 丢弃所有文件的工作区修改                     |
+| `git restore --staged <file>`    | 从暂存区移除文件，保留工作区的更改           |
+| `git restore --source=<commit>`  | 恢复文件到指定提交的状态                     |
+| `git restore --force <file>`     | 强制覆盖文件状态，即使有未保存的更改         |
+
+`git restore` 是一个功能强大且易用的命令，建议在需要恢复文件状态或撤销更改时优先使用它。如果你有其他需求，可以随时详细探讨！
+
+
+### 9. **合并分支**
+
+git merge <branch-name>
+
+- **作用**：将指定分支合并到当前分支。
+- **常见冲突解决**：
+  - 手动编辑冲突文件，解决冲突后执行：
+    
+    git add <conflict-file>
+    git commit
+    
+
+---
+
+### 10. **远程仓库操作**
+- **查看远程仓库**
+  
+  git remote -v
+  
+- **添加远程仓库**
+  
+  git remote add origin <repository-url>
+  
+- **推送到远程仓库**
+  
+  git push origin <branch-name>
+  
+- **拉取远程更新**
+  
+  git pull origin <branch-name>
+  
+
+---
+
+## 二、高级操作
+
+### 1. **撤销改动**
+- **撤销工作区的改动**
+  
+  git checkout -- <file>
+  
+- **撤销暂存区的改动**
+  
+  git reset HEAD <file>
+  
+
+---
+
+### 2. **软、混合、硬重置**
+- **软重置**
+  
+  git reset --soft HEAD~1
+  
+  - **作用**：回退到上一个提交，但保留工作区和暂存区的内容。
+- **混合重置**
+  
+  git reset --mixed HEAD~1
+  
+  - **作用**：回退到上一个提交，并清空暂存区，保留工作区的内容。
+- **硬重置**
+  
+  git reset --hard HEAD~1
+  
+  - **作用**：回退到上一个提交，清空暂存区和工作区。
+
+---
+
+### 3. **清理未跟踪的文件**
+
+git clean -f
+
+- **作用**：删除未被 Git 跟踪的文件。
+- **常用选项**：
+  - `-d`：删除未跟踪的目录。
+  - `-n`：显示将删除的文件列表（不执行删除）。
+
+---
+
+### 4. **变基操作**
+
+git rebase <branch-name>
+
+- **作用**：将当前分支的提交变基到另一个分支上，创建更直线化的历史记录。
+- **常见用法**：
+  - 将 `feature` 分支变基到 `main` 分支：
+    
+    git checkout feature
+    git rebase main
+    
+
+---
+
+### 5. **交互式变基**
+
+git rebase -i HEAD~n
+
+- **作用**：修改最近 n 次提交。
+- **操作选项**：
+  - `pick`：保留提交。
+  - `squash`：合并当前提交到前一个提交。
+  - `edit`：编辑提交信息。
+
+---
+
+## 三、Git 应用场景示例
+
+### 1. **多人协作**
+- **拉取最新代码**
+  
+  git pull origin main
+  
+- **解决冲突后提交**
+  
+  git add .
+  git commit -m "resolve conflicts"
+  
+
+### 2. **版本回滚**
+- 查看历史提交记录：
+  
+  git log
+  
+- 回滚到指定提交：
+  
+  git reset --hard <commit-id>
+  
+
+---
+
+### 3. **暂存工作进度**
+
+git stash
+
+- **作用**：保存当前未完成的改动以便切换分支。
+- **恢复改动**：
+  
+  git stash apply
+  
+
+---
+
+### 4. **查看某次提交的内容**
+
+git show <commit-id>
+
+- **作用**：查看特定提交的详细改动内容。
+
+---
+
+### 5. **创建标签**
+- **轻量标签**
+  
+  git tag <tag-name>
+  
+- **带信息的标签**
+  
+  git tag -a <tag-name> -m "tag message"
+  
+- **推送标签到远程**
+  
+  git push origin <tag-name>
+  
+
