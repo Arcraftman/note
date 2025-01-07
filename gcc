@@ -31,6 +31,19 @@
    
    这个命令会开启常见的警告，帮助你发现代码中的潜在问题。
 
+使用 GCC 连接目标文件
+假设您的 SinglyLinkedList.o 文件已经通过以下命令生成：
+
+
+
+gcc -c SinglyLinkedList.c -o SinglyLinkedList.o
+接下来可以通过以下命令将它链接为可执行文件：
+
+
+
+gcc -o SinglyLinkedList SinglyLinkedList.o
+这个命令的作用是将目标文件 SinglyLinkedList.o 链接为可执行文件 SinglyLinkedList
+
 ### 调试和优化
 6. **生成调试信息**
    
