@@ -19,6 +19,13 @@
    
    这个命令将把 C 代码编译为汇编代码（`.s` 文件）。
 
+   使用 gcc 编译 .s 到 .o
+   gcc -c example.s -o example.o
+   参数说明：
+   -c：表示只编译，不链接，生成目标文件。
+   example.s：输入的汇编文件。
+   -o example.o：指定输出目标文件的名称
+
 4. **查看预处理输出**
    
    gcc -E source.c

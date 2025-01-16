@@ -1,0 +1,59 @@
+试各种加密算法的网站可以用来学习、实验和验证不同的加密技术。这些网站通常提供在线工具和示例代码，支持加密、解密、数字签名和哈希等功能。以下是一些常见的推荐平台：
+
+---
+
+## **1. 在线加密和解密工具**
+这些网站允许用户通过图形界面测试多种加密和解密算法：
+- **[CyberChef](https://gchq.github.io/CyberChef/)**  
+  一个多功能数据处理工具，可以测试 AES、RSA、SHA、Base64 等算法。
+- **[Cryptii](https://cryptii.com/)**  
+  提供多种加密、解密和编码工具，例如凯撒密码、AES 和哈希算法。
+- **[Online Toolz](https://www.tools4noobs.com/online_tools/)**  
+  支持 MD5、SHA-256、AES 等加密解密。
+  
+---
+
+## **2. 教育性加密学习平台**
+- **[Cryptohack](https://cryptohack.org/)**  
+  一个交互式学习平台，提供加密相关的挑战和解密任务。
+- **[CTFlearn](https://ctflearn.com/)**  
+  提供各种关于密码学的任务和练习，包括 RSA 和对称加密。
+  
+---
+
+## **3. RSA 专项测试工具**
+- **[RSACrypto](https://www.devglan.com/online-tools/rsa-encryption-decryption)**  
+  在线生成公钥和私钥，并进行 RSA 加密解密测试。
+- **[Dcode](https://www.dcode.fr/rsa-cipher)**  
+  允许用户输入公钥和私钥进行 RSA 加密、解密或破解。
+
+---
+
+## **4. 哈希算法测试工具**
+- **[MD5 Hash Generator](https://passwordsgenerator.net/md5-hash-generator/)**  
+  生成和验证 MD5 哈希值。
+- **[Online Hash Crack](https://www.onlinehashcrack.com/)**  
+  支持 MD5、SHA-1、SHA-256 等哈希验证和破解。
+
+---
+
+## **5. 区块链相关加密平台**
+- **[Blockchain Demo](https://andersbrownworth.com/blockchain/)**  
+  提供一个简单的区块链结构，展示哈希和数字签名的作用。
+- **[Etherplay](https://etherplay.io/)**  
+  以太坊的智能合约加密和签名测试平台。
+
+---
+
+## **6. API 测试平台**
+- **[Postman](https://www.postman.com/)**  
+  通过 API 测试 HTTPS 加密传输和 JWT（JSON Web Token）的加密解密。
+- **[JWT.io](https://jwt.io/)**  
+  在线测试 JWT 的加密和解密，支持自定义密钥。
+
+---
+
+## **7. OpenSSL 在线环境**
+- **[Online OpenSSL](https://8gwifi.org/openssl.jsp)**  
+  提供 OpenSSL 功能的在线环境，支持 RSA、AES 和证书管理。
+

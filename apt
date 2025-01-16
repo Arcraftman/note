@@ -1,0 +1,271 @@
+这些文件和目录是 Ubuntu 或 Debian 系统中与 `apt` 包管理器相关的重要配置文件和目录。它们决定了软件包的来源、验证和优先级设置。下面详细解释每一项的作用：
+
+---
+
+### **1. `apt.conf.d`**
+- **作用**：存放 APT 的配置文件目录。
+- **文件说明**：
+  - 包含一系列以 `.conf` 结尾的配置文件，用于全局设置 APT 的行为。
+  - 例如设置代理、缓存大小、日志级别等。
+- **常用配置**：
+  - 配置代理：
+    
+    Acquire::http::Proxy "http://proxy.example.com:8080/";
+    
+  - 禁用推荐包安装：
+    
+    APT::Install-Recommends "false";
+    
+
+---
+
+### **2. `auth.conf.d`**
+- **作用**：存放认证相关的配置。
+- **文件说明**：
+  - 用于配置访问私有软件源的用户名和密码。
+- **典型用法**：
+  - 例如，访问私有 APT 仓库时设置认证信息：
+    
+    machine my-private-repo.com
+    login myusername
+    password mypassword
+    
+
+---
+
+### **3. `keyrings`**
+- **作用**：存放 GPG 密钥文件。
+- **文件说明**：
+  - 这些密钥用于验证从 APT 源下载的软件包的完整性和真实性。
+- **常用命令**：
+  - 添加密钥：
+    
+    sudo apt-key add keyfile.gpg
+    
+  - 或通过命令下载密钥：
+    
+    curl -fsSL https://example.com/repo.key | sudo gpg --dearmor -o /etc/apt/keyrings/repo.gpg
+    
+
+---
+
+### **4. `preferences.d`**
+- **作用**：用于设置软件包的优先级。
+- **文件说明**：
+  - 包含自定义的优先级规则，影响某些版本的软件包从特定源安装的优先级。
+- **示例配置**：
+  
+  Package: *
+  Pin: release a=stable
+  Pin-Priority: 1000
+  
+
+---
+
+### **5. `preferences.d.save`**
+- **作用**：`preferences.d` 的备份文件。
+- **文件说明**：
+  - 可能是系统更新或手动备份时产生，用于保存旧版本的优先级配置。
+
+---
+
+### **6. `sources.list`**
+- **作用**：APT 的主软件源列表文件。
+- **文件说明**：
+  - 定义所有软件包的来源，包括官方仓库和第三方仓库。
+- **常见格式**：
+  
+  deb http://archive.ubuntu.com/ubuntu focal main restricted universe multiverse
+  deb-src http://archive.ubuntu.com/ubuntu focal main restricted universe multiverse
+  
+- **操作命令**：
+  - 编辑文件：
+    
+    sudo nano /etc/apt/sources.list
+    
+  - 更新软件源：
+    
+    sudo apt update
+    
+
+---
+
+### **7. `sources.list.d`**
+- **作用**：存放额外的软件源列表。
+- **文件说明**：
+  - 当你添加新的 PPA 或第三方软件源时，APT 会在这里创建单独的 `.list` 文件。
+- **操作示例**：
+  - 添加 PPA：
+    
+    sudo add-apt-repository ppa:graphics-drivers/ppa
+    
+  - 在 `sources.list.d` 中会生成一个文件，例如 `graphics-drivers-ubuntu-ppa-focal.list`。
+
+---
+
+### **8. `trusted.gpg.d`**
+- **作用**：存放可信软件源的 GPG 公钥。
+- **文件说明**：
+  - 这些密钥用于验证下载的软件包是否来自可信的软件源。
+- **操作示例**：
+  - 手动将密钥添加到此目录：
+    
+    sudo cp repo-key.gpg /etc/apt/trusted.gpg.d/
+    
+
+---
+
+### **总结**
+这些文件和目录是 APT 包管理器工作的核心部分：
+
+- **`sources.list` 和 `sources.list.d`**：定义软件源。
+- **`trusted.gpg.d` 和 `keyrings`**：验证软件包来源。
+- **`preferences.d`**：设置优先级。
+- **`auth.conf.d`**：管理访问私有源的认证信息。
+- **`apt.conf.d`**：调整 APT 的行为。
+
+
+
+
+
+`apt` 是 Ubuntu 和 Debian 系统中常用的包管理工具，用于安装、升级、删除和管理软件包。相比老版本的 `apt-get`，`apt` 更加简洁且用户友好。以下是 `apt` 命令的详细说明及常用用法：
+
+---
+
+### **常用命令及解释**
+
+#### **1. 更新软件包列表**
+
+sudo apt update
+
+- 从软件源中更新可用软件包的信息。
+- **常用场景**：在安装或升级软件之前，确保获取最新的软件包版本。
+
+---
+
+#### **2. 升级已安装的软件包**
+
+sudo apt upgrade
+
+- 更新系统中所有已安装的软件包到最新版本。
+- **选项**：
+  - `-y`：自动确认升级（不需要人工输入 `yes`）。
+  - `--dry-run`：模拟升级操作，不实际执行。
+
+---
+
+#### **3. 全部升级（包括可能移除的包）**
+
+sudo apt full-upgrade
+
+- 与 `upgrade` 不同，它允许移除不必要的软件包以完成升级。
+- **注意**：可能会移除一些旧包，请慎重使用。
+
+---
+
+#### **4. 安装软件包**
+
+sudo apt install 包名
+
+- 从软件源中下载并安装指定的软件包。
+- **示例**：
+  
+  sudo apt install vim
+  
+- **选项**：
+  - `-y`：自动确认安装。
+
+---
+
+#### **5. 删除软件包**
+
+sudo apt remove 包名
+
+- 删除指定的软件包，但会保留配置文件。
+- **示例**：
+  
+  sudo apt remove vim
+  
+
+#### **6. 删除软件包及配置文件**
+
+sudo apt purge 包名
+
+- 完全删除软件包及其相关配置文件。
+
+---
+
+#### **7. 清理无用的包**
+
+sudo apt autoremove
+
+- 移除系统中不再需要的依赖包（例如：卸载软件后留下的依赖项）。
+
+---
+
+#### **8. 搜索软件包**
+
+apt search 包名
+
+- 在软件包库中查找与关键词匹配的软件包。
+- **示例**：
+  
+  apt search firefox
+  
+
+---
+
+#### **9. 显示软件包信息**
+
+apt show 包名
+
+- 查看指定软件包的详细信息，包括版本、依赖、描述等。
+- **示例**：
+  
+  apt show vim
+  
+
+---
+
+#### **10. 清理缓存**
+
+sudo apt clean
+
+- 清空已下载的包文件缓存，释放磁盘空间。
+
+
+sudo apt autoclean
+
+- 删除已过期或不再使用的缓存文件。
+
+---
+
+#### **11. 检查已安装的软件包**
+
+apt list --installed
+
+- 列出所有已安装的软件包。
+
+---
+
+#### **12. 显示可升级的软件包**
+
+apt list --upgradeable
+
+- 列出系统中可以升级的软件包。
+
+---
+
+### **与 `apt-get` 的对比**
+- **`apt`** 是 `apt-get` 的简化版本，适合终端用户。
+- 更友好的输出、更简洁的命令：
+  - `apt update` 相当于 `apt-get update`
+  - `apt install` 相当于 `apt-get install`
+
+---
+
+### **实践建议**
+1. **定期更新**：每隔一段时间运行 `sudo apt update` 和 `sudo apt upgrade`，保持系统最新。
+2. **善用清理命令**：用 `sudo apt autoremove` 和 `sudo apt clean` 清理磁盘空间。
+3. **查看信息再安装**：使用 `apt search` 和 `apt show` 确认包的信息。
+

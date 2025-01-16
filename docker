@@ -1,0 +1,341 @@
+Docker 是一个容器化平台，其命令可以分为两大类：**客户端命令**（管理 Docker 容器、镜像等）和 **服务端管理命令**（管理 Docker 服务）。以下是常用 Docker 命令的详细介绍，分模块讲解。
+
+---
+
+## **1. Docker 基本命令**
+这些命令用于管理 Docker 服务和环境。
+
+### **1.1 检查 Docker 服务**
+- **启动 Docker 服务**：
+  
+  sudo systemctl start docker
+  
+- **停止 Docker 服务**：
+  
+  sudo systemctl stop docker
+  
+- **检查 Docker 服务状态**：
+  
+  sudo systemctl status docker
+  
+
+### **1.2 查看 Docker 版本**
+- **查看 Docker 版本**：
+  
+  docker --version
+  
+- **详细版本信息**：
+  
+  docker version
+  
+- **检查系统的 Docker 环境信息**：
+  
+  docker info
+  
+
+---
+
+## **2. 镜像管理**
+Docker 镜像是容器的基础。以下命令用于下载、查看、删除镜像等操作。
+
+### **2.1 搜索镜像**
+- **在 Docker Hub 搜索镜像**：
+  
+  docker search <镜像名>
+  
+  示例：
+  
+  docker search nginx
+  
+
+### **2.2 下载镜像**
+- **拉取指定镜像**：
+  
+  docker pull <镜像名>:<标签>
+  
+  示例：
+  
+  docker pull ubuntu:20.04
+  
+  默认会拉取 `latest` 标签。
+
+### **2.3 查看本地镜像**
+- **列出所有本地镜像**：
+  
+  docker images
+  
+
+### **2.4 删除镜像**
+- **删除单个镜像**：
+  
+  docker rmi <镜像ID>
+  
+- **强制删除**：
+  
+  docker rmi -f <镜像ID>
+  
+
+### **2.5 构建镜像**
+- **从 Dockerfile 构建镜像**：
+  
+  docker build -t <镜像名>:<标签> <Dockerfile目录>
+  
+  示例：
+  
+  docker build -t myapp:v1 .
+  
+
+---
+
+## **3. 容器管理**
+容器是镜像的运行实例，以下是管理容器的常用命令。
+
+### **3.1 创建并启动容器**
+- **运行容器**：
+  
+  docker run <选项> <镜像名>
+
+### **基本语法**
+
+docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+
+
+- **IMAGE**：指定要运行的镜像。
+- **COMMAND**：可选，指定容器启动时要执行的命令（如果没有指定，则运行镜像的默认命令）。
+- **ARG**：可选，传递给命令的参数。
+
+### **常用选项**
+
+| 选项                          | 描述                                                             |
+|-------------------------------|------------------------------------------------------------------|
+| `-d` 或 `--detach`             | 后台运行容器，返回容器ID。                                        |
+| `--name`                       | 为容器指定一个名称。                                              |
+| `-p` 或 `--publish`            | 映射容器端口到主机端口，格式为 `主机端口:容器端口`。              |
+| `-v` 或 `--volume`             | 挂载一个卷（本地目录或 Docker 卷）到容器中，格式为 `主机路径:容器路径`。 |
+| `--env` 或 `-e`                | 设置环境变量。                                                   |
+| `-it`                          | 以交互模式启动容器并打开终端（通常用于运行命令行工具）。           |
+| `--rm`                         | 容器停止后自动删除容器。                                          |
+| `--network`                    | 指定容器的网络模式（如 `bridge`、`host`、`none`、`container:<name>`）。 |
+| `-w` 或 `--workdir`            | 设置容器内的工作目录。                                           |
+| `--restart`                    | 配置容器在退出后是否自动重启，支持 `no`、`always`、`on-failure`、`unless-stopped`。 |
+
+---
+
+### **常见用法示例**
+
+1. **以交互模式运行容器并进入 shell**
+   - 启动一个容器，并以交互模式连接到容器的 shell：
+   
+   docker run -it ubuntu /bin/bash
+   
+   这将基于 `ubuntu` 镜像启动容器并进入 bash shell。
+
+2. **后台运行容器**
+   - 在后台运行容器：
+   
+   docker run -d --name mynginx nginx
+   
+   这将在后台运行一个名为 `mynginx` 的容器，基于 `nginx` 镜像。
+
+3. **映射端口**
+   - 映射主机的 8080 端口到容器的 80 端口：
+   
+   docker run -p 8080:80 nginx
+   
+   这会将容器内的 80 端口映射到宿主机的 8080 端口，允许外部通过主机的 8080 端口访问容器。
+
+4. **挂载卷**
+   - 将主机的 `/path/on/host` 目录挂载到容器的 `/path/in/container` 目录：
+   
+   docker run -v /path/on/host:/path/in/container ubuntu
+   
+   容器可以访问和操作挂载的目录中的文件。
+
+5. **设置环境变量**
+   - 设置环境变量 `MY_VAR` 为 `value`：
+   
+   docker run -e MY_VAR=value ubuntu
+   
+   该环境变量将在容器启动时可用。
+
+6. **删除容器停止后自动删除容器**
+   - 启动容器并在容器停止时自动删除：
+   
+   docker run --rm ubuntu
+   
+
+7. **限制容器的资源使用**
+   - 限制容器的 CPU 和内存使用：
+   
+   docker run --memory="512m" --cpus="1.0" ubuntu
+   
+
+8. **自定义容器名称**
+   - 运行容器时指定名称：
+   
+   docker run --name mycontainer ubuntu
+   
+
+9. **重启策略**
+   - 配置容器停止后自动重启：
+   
+   docker run --restart always ubuntu
+   
+
+---
+
+### **高级用法**
+
+1. **使用自定义网络**
+   - 运行容器时指定自定义网络：
+   
+   docker network create mynetwork
+   docker run --network mynetwork ubuntu
+   
+
+2. **挂载 Docker 卷**
+   - 将 Docker 卷挂载到容器中：
+   
+   docker run -v my_volume:/data ubuntu
+   
+
+3. **使用 Docker Compose**
+   - 在使用 Docker Compose 时，`docker run` 语法可以被用来定义多个服务，但通常使用 `docker-compose.yml` 文件来配置多个容器的运行。
+
+---
+
+### **3.2 查看容器**
+- **查看运行中的容器**：
+  
+  docker ps
+  
+- **查看所有容器（包括停止的）**：
+  
+  docker ps -a
+  
+
+### **3.3 停止与启动容器**
+- **停止容器**：
+  
+  docker stop <容器ID或容器名>
+  
+- **启动已停止的容器**：
+  
+  docker start <容器ID或容器名>
+  
+
+### **3.4 删除容器**
+- **删除已停止的容器**：
+  
+  docker rm <容器ID或容器名>
+  
+- **强制删除运行中的容器**：
+  
+  docker rm -f <容器ID或容器名>
+  
+
+### **3.5 进入容器**
+- **进入交互式容器**：
+  
+  docker exec -it <容器ID或容器名> /bin/bash
+  
+
+---
+
+## **4. 数据卷（Volume）管理**
+数据卷用于容器之间共享数据，或将数据持久化到宿主机。
+
+### **4.1 创建数据卷**
+- **创建数据卷**：
+  
+  docker volume create <数据卷名>
+  
+
+### **4.2 查看数据卷**
+- **列出所有数据卷**：
+  
+  docker volume ls
+  
+
+### **4.3 删除数据卷**
+- **删除特定数据卷**：
+  
+  docker volume rm <数据卷名>
+  
+
+- **删除未使用的数据卷**：
+  
+  docker volume prune
+  
+
+### **4.4 挂载数据卷到容器**
+- 在运行容器时挂载：
+  
+  docker run -v <数据卷名>:<容器路径> <镜像名>
+  
+  示例：
+  
+  docker run -v mydata:/app/data ubuntu
+  
+
+---
+
+## **5. 网络管理**
+Docker 提供了灵活的网络功能。
+
+### **5.1 查看网络**
+- **列出所有网络**：
+  
+  docker network ls
+  
+
+### **5.2 创建网络**
+- **创建自定义网络**：
+  
+  docker network create <网络名>
+  
+
+### **5.3 查看网络详情**
+- **查看指定网络的详情**：
+  
+  docker network inspect <网络名>
+  
+
+### **5.4 将容器连接到网络**
+- **将运行的容器连接到网络**：
+  
+  docker network connect <网络名> <容器名或容器ID>
+  
+
+- **从网络中断开容器**：
+  
+  docker network disconnect <网络名> <容器名或容器ID>
+  
+
+---
+
+## **6. 清理命令**
+这些命令用于清理无用的资源，释放空间。
+
+### **6.1 删除未使用的容器、网络、数据卷和镜像**
+
+docker system prune
+
+- **包括未使用的卷和镜像**：
+  
+  docker system prune -a --volumes
+  
+
+---
+
+### **总结**
+Docker 命令非常灵活，适合各种场景使用。如果你对某个命令或选项有更多需求，可以直接运行以下命令查看帮助：
+
+
+docker <命令> --help
+
+
+例如：
+
+docker run --help
+
