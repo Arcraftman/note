@@ -1,3 +1,16 @@
+常用命令总结
+
+生成密钥对	gpg --full-generate-key
+列出密钥	gpg --list-keys / gpg --list-secret-keys
+导出公钥	gpg --export --armor "email" > public_key.asc
+导入密钥	gpg --import keyfile.asc
+加密文件	gpg --encrypt --recipient "email" file
+解密文件	gpg --decrypt file.gpg
+签名文件	gpg --sign file
+验证签名	gpg --verify file.sig file
+删除公钥或私钥	gpg --delete-key / gpg --delete-secret-key
+
+
 以下是 **GPG（GNU Privacy Guard）** 的详细命令说明，包括常用功能及示例：
 
 ---
