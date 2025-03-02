@@ -1,0 +1,56 @@
+XDG 是 "**X Desktop Group**" 的缩写，是一个由 **freedesktop.org** 维护的标准和规范集合，旨在促进 Linux 和其他类 Unix 系统桌面环境之间的互操作性。XDG 主要定义了各种桌面环境（如 GNOME、KDE、XFCE 等）之间的通用规范，使得应用程序和桌面环境能够更好地协同工作。
+
+以下是 XDG 的一些核心概念和规范：
+
+---
+
+### 1. **XDG Base Directory Specification**
+- 定义了一组标准目录，指定应用程序应该将配置文件、缓存文件和数据文件存储在什么位置。
+- 主要的环境变量：
+  - **`XDG_CONFIG_HOME`**：用户配置文件存储路径（默认：`~/.config`）
+  - **`XDG_DATA_HOME`**：用户数据文件存储路径（默认：`~/.local/share`）
+  - **`XDG_CACHE_HOME`**：用户缓存文件存储路径（默认：`~/.cache`）
+  - **`XDG_RUNTIME_DIR`**：运行时文件存储路径（如进程的临时文件）
+
+---
+
+### 2. **XDG Desktop Entry Specification**
+- 定义了 `.desktop` 文件的格式，用于描述应用程序的启动信息（如名称、图标、执行命令等）。
+- 常见于 Linux 系统的应用程序菜单或桌面快捷方式。
+- 示例 `.desktop` 文件内容：
+  ```ini
+  [Desktop Entry]
+  Name=Example Application
+  Exec=example-app
+  Icon=example-icon
+  Type=Application
+  ```
+
+---
+
+### 3. **XDG MIME Applications Specification**
+- 定义了如何处理 MIME 类型和文件关联。
+- 通过此规范，桌面环境可以根据文件类型自动选择合适的应用程序打开文件。
+
+---
+
+### 4. **XDG Menu Specification**
+- 定义了桌面环境如何组织和显示应用程序菜单。
+
+---
+
+### 5. **XDG Icon Theme Specification**
+- 定义了图标主题的组织方式和命名规则，使得不同桌面环境可以共享图标主题。
+
+---
+
+### 6. **其他相关规范**
+- **XDG Autostart Specification**：定义了哪些应用程序应该在用户登录时自动启动。
+- **XDG Trash Specification**：定义了回收站（Trash）的行为和存储位置。
+
+---
+
+### XDG 的作用
+XDG 的规范解决了 Linux 桌面环境之间的兼容性问题，使得应用程序可以在不同的桌面环境中无缝运行，同时也为开发者提供了统一的开发标准。
+
+如果你有更具体的 XDG 相关问题，可以进一步提问！
